@@ -1,8 +1,6 @@
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -155,10 +153,72 @@ public class Notepad extends JFrame implements ActionListener{
         text.paste();
       }
       else if(e.getSource()==openItem){
-        
-      }
+        JFileChooser fileChoser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Text", "dream");
+        fileChoser.setFileFilter(filter);
+        int r = fileChoser.showOpenDialog(this);
+        if(r==JFileChooser.APPROVE_OPTION){
+          fileName = fileChoser.getSelectedFile().getPath();
+          setTitle(fileName+ "- Dream");
+          try{
+            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            text.read(reader,null);
+            reader.close();
+          }
+          catch(IOException ex){
+            ex.printStackTrace();
 
+          }
+        }
+      
     }
+    else if(e.getSource()==saveItem){
+      JFileChooser fileChooser = new JFileChooser();
+      FileNameExtensionFilter filter = new FileNameExtensionFilter("Text", "dream");
+      fileChooser.setFileFilter(filter);
+      int r = fileChooser.showOpenDialog(this);
+      if(r==JFileChooser.APPROVE_OPTION){
+        fileName = fileChooser.getSelectedFile().getPath();
+        if (!fileName.endsWith(".dream")) {
+          fileName += ".txt";
+      }
+        setTitle(fileName+"- Dream");
+        try{
+          FileWriter writer = new FileWriter(fileName);
+          text.write(writer);
+          writer.close();
+          
+        }
+        catch(IOException ex){
+          ex.printStackTrace();
+        }
+      }
+    }
+    else if(e.getSource()==saveAsItem){
+      JFileChooser fileChooser = new JFileChooser();
+      FileNameExtensionFilter filter = new FileNameExtensionFilter("Text", "dream");
+      fileChooser.setFileFilter(filter);
+      int r = fileChooser.showOpenDialog(this);
+      if(r==JFileChooser.APPROVE_OPTION){
+        fileName = fileChooser.getSelectedFile().getPath();
+        if(!fileName.endsWith(".dream")){
+          fileName+=".txt";
+
+        }
+        setTitle(fileName+"- Dream");
+      }
+      try{
+        FileWriter writer = new FileWriter(fileName);
+        text.write(writer);
+        writer.close();
+
+      }
+      catch(IOException ex){
+        ex.printStackTrace();
+      }
+    }
+
+  }
     public static void main(String[] args) {
         Notepad frame = new Notepad();
         frame.setVisible(true);
